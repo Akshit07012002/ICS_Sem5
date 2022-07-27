@@ -35,18 +35,11 @@ public class RailFence {
                     String[] plainText = s.split(""); //splits and stores plain text coming from the user
                     System.out.print("\tEnter depth : ");
                     int depth = Integer.parseInt(in.readLine()); //stores key coming from the user
-                    String[][] cipherText = ob.encrypt(plainText, depth); // stores cipher text returned from encrypt()
+                    String cipherText = ob.encrypt(plainText, depth); // stores cipher text returned from encrypt()
                     String cipherTextString = "";
                     System.out.println("\tPLAIN TEXT  : " + s); // prints plain text
-                    for (int i=0; i<cipherText.length; i++) {
-                        for (int j=0; j<cipherText[i].length; j++) {
-                            cipherTextString = cipherTextString.concat(cipherText[i][j]);
-                            System.out.print(cipherText[i][j]);
-                        }
-                        System.out.println();
-                    }
-                    System.out.println("\tCIPHER TEXT : "); // prints cipher text
-                    System.out.println(cipherTextString);
+
+                    System.out.println("\tCIPHER TEXT : " + cipherTextString); // prints cipher text
                 }
                 case 2 -> {
                     System.out.print("\tEnter your string : ");
@@ -55,13 +48,9 @@ public class RailFence {
                     String[] cipherText = s.split(""); //splits and stores plain text coming from the user
                     System.out.print("\tEnter depth : ");
                     int depth = Integer.parseInt(in.readLine()); //stores key coming from the user
-                    String[] plainText = ob.decrypt(cipherText, depth); // stores cipher text returned from encrypt()
-                    System.out.println("\tPLAIN TEXT  : " + s); // prints plain text
-                    System.out.print("\tCIPHER TEXT : "); // prints cipher text
-                    for (int i = 0; i < l; i++) {
-                        System.out.print(plainText[i]);
-                    }
-                    System.out.println();
+                    System.out.println("\tCIPHER TEXT : " + s); // prints cipher text
+                    String plainText = ob.decrypt(cipherText, depth);
+                    System.out.println("\tPLAIN TEXT  :  " + plainText.replace("#","")); // prints plain text
                 }
                 case 3 -> {
                     System.out.println("\tTERMINATING");
@@ -71,39 +60,59 @@ public class RailFence {
         }while(choice!=3);
     }
 
-    public String[][] encrypt(String []s, int d){
+//    public String[][] encrypt(String []s, int d){
+//
+//        String[][] cp = new String[d][(l/d)+1]; //stores cipher text
+//        int k = 0; // iteration variable
+//
+//        for(int i=0; i<d+1; i++){
+//           for(int j=0; j<(l/d); j++){
+//               if(k>=l)
+//                   cp[j][i] = "#";
+//               else {
+//                   cp[j][i] = s[k];
+//                   k++;
+//               }
+//           }
+//        }
+//        return cp;
+//    }
 
-        String[][] cp = new String[d][(l/d)+1]; //stores cipher text
-        int t; // temporary storage
-        int k = 0; // iteration variable
 
-        for(int i=0; i<d+1; i++){
-           for(int j=0; j<(l/d); j++){
-               if(k>=l)
-                   cp[j][i] = "#";
-               else {
-                   cp[j][i] = s[k];
-                   k++;
-               }
-           }
+    public String encrypt(String []s, int d){
+
+        String cp = "";
+        int z = 0; // for iteration purposes
+        for(int i=z; ; i=i+(d+1)){
+            if(i>=s.length){
+                z++;
+                i=z;
+            }
+
+            cp = cp.concat(s[i]);
+            if(cp.length() == l)
+                break;
         }
+
+        System.out.println(cp);
         return cp;
     }
+    public String decrypt(String[] s, int d){
 
-    public String[] decrypt(String []s, int k){
-
-        String[] cp = new String[l]; //stores cipher text
-        int t; //temporary storage
-
-        for(int i=0; i<l; i++){
-            if( (s[i].charAt(0)) != ' '){
-                t = ((int) s[i].charAt(0) - k);
-                cp[i] = Character.toString(t);
-            }else {
-                cp[i] = " ";
+        String cp = "";
+        int z = 0; // for iteration purposes
+        for(int i=z; ; i=i+((l/d))){
+            if(i>=s.length){
+                z++;
+                i=z;
             }
-//            System.out.println(t + ", " + cp[i]);
+
+            cp = cp.concat(s[i]);
+            if(cp.length() == l)
+                break;
         }
+
+        System.out.println(cp);
         return cp;
     }
 
